@@ -1,19 +1,20 @@
-import express from "express";
-import client from "./db";
+import express, { Request, Response } from "express";
+import userRoutes from "./routes/userRoutes";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
-const port = 3000;
 
-app.get("/", async (req, res) => {
-  try {
-    const result = await client.query("SELECT NOW()");
-    res.json({ message: "Connection successful", time: result.rows[0] });
-  } catch (err: any) {
-    console.error("Error querying PostgreSQL:", err.stack);
-    res.status(500).json({ error: "Database query failed" });
-  }
+app.use(express.json());
+app.use("/api", userRoutes);
+
+app.get("/", (req: Request, res: Response) => {
+  res.send("Welcome to the Holy Crap API!");
 });
 
+const port = process.env.PORT || 3000;
+
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+  console.log(`Server running on port ${port}`);
 });

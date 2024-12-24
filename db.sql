@@ -43,7 +43,9 @@ CREATE TABLE feed (
         ON DELETE CASCADE
 );
 
--- Bridge Tables
+
+
+-- Bridge Tables (Still need to add to our DB)
 CREATE TABLE user_creature (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL,

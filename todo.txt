@@ -1,4 +1,4 @@
 - Create Tables on Database
 - Make routes for each table
 - AWS Cognito Authentication
-- 
+- Install swagger-jsdoc and swagger-ui-express to auto-generate API documentation based on your routes: 
