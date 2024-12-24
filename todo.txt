@@ -1,0 +1,4 @@
+- Create Tables on Database
+- Make routes for each table
+- AWS Cognito Authentication
+- 
