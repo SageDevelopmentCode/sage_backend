@@ -29,13 +29,14 @@ CREATE TABLE challenges (
     details JSON
 );
 
-CREATE TABLE feed (
+-- Feed Posts Tables
+CREATE TABLE posts (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL,
     title VARCHAR(255) NOT NULL,
     content JSON NOT NULL,
-    feed_type VARCHAR(50) NOT NULL, -- Specifies the type of feed (e.g., "Holy Drip", "Daily Drops")
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    post_type VARCHAR(50) NOT NULL, -- Specifies the type of feed (e.g., "Holy Drip", "Daily Drops")
+    created_at DATE DEFAULT CURRENT_DATE,
     updated_at DATE DEFAULT CURRENT_DATE,
     CONSTRAINT fk_user
         FOREIGN KEY (user_id) 
@@ -43,7 +44,76 @@ CREATE TABLE feed (
         ON DELETE CASCADE
 );
 
+CREATE TABLE text_posts (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    post_id UUID NOT NULL,
+    text_content TEXT NOT NULL,
+    created_at DATE DEFAULT CURRENT_DATE,
+    updated_at DATE DEFAULT CURRENT_DATE,
+    CONSTRAINT fk_post
+        FOREIGN KEY (post_id) 
+        REFERENCES posts (id) 
+        ON DELETE CASCADE
+);
 
+CREATE TABLE images_posts (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    post_id UUID NOT NULL,
+    image_url VARCHAR(255) NOT NULL,
+    alt_text VARCHAR(255),  -- Optional: description of the image
+    created_at DATE DEFAULT CURRENT_DATE,
+    updated_at DATE DEFAULT CURRENT_DATE,
+    CONSTRAINT fk_post
+        FOREIGN KEY (post_id) 
+        REFERENCES posts (id) 
+        ON DELETE CASCADE
+);
+
+CREATE TABLE videos_posts (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    post_id UUID NOT NULL,
+    video_url VARCHAR(255) NOT NULL,
+    thumbnail_url VARCHAR(255),  -- Optional: thumbnail for video
+    created_at DATE DEFAULT CURRENT_DATE,
+    updated_at DATE DEFAULT CURRENT_DATE,
+    CONSTRAINT fk_post
+        FOREIGN KEY (post_id) 
+        REFERENCES posts (id) 
+        ON DELETE CASCADE
+);
+
+CREATE TABLE post_likes (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL,
+    post_id UUID NOT NULL,
+    created_at DATE DEFAULT CURRENT_DATE,
+    updated_at DATE DEFAULT CURRENT_DATE,
+    CONSTRAINT fk_post
+        FOREIGN KEY (post_id) 
+        REFERENCES posts (id) 
+        ON DELETE CASCADE,
+    CONSTRAINT fk_user
+        FOREIGN KEY (user_id) 
+        REFERENCES users (id) 
+        ON DELETE CASCADE
+);
+
+CREATE TABLE post_comments (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL,
+    post_id UUID NOT NULL,
+    content TEXT NOT NULL,
+    created_at DATE DEFAULT CURRENT_DATE,
+    updated_at DATE DEFAULT CURRENT_DATE,
+    CONSTRAINT fk_post
+        FOREIGN KEY (post_id) 
+        REFERENCES posts (id) 
+        ON DELETE CASCADE,
+    CONSTRAINT fk_user
+        FOREIGN KEY (user_id) 
+        REFERENCES users (id) 
+        ON DELETE CASCADE
+);
 
 -- Bridge Tables (Still need to add to our DB)
 CREATE TABLE user_creature (

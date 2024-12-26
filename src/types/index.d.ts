@@ -6,3 +6,13 @@ export interface User {
   updated_at: Date;
   password: string;
 }
+
+export interface Creature {
+  id: string;
+  name: string;
+  type: string;
+  created_at: string;
+  updated_at: string;
+  description?: string;
+  image_url?: string;
+}
