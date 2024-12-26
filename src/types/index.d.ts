@@ -16,3 +16,13 @@ export interface Creature {
   description?: string;
   image_url?: string;
 }
+
+export interface Post {
+  id: string;
+  user_id: string;
+  title: string;
+  content: any; // Use a more specific type based on the actual content
+  post_type: string;
+  created_at: string;
+  updated_at: string;
+}
